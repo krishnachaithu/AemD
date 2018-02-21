@@ -1,0 +1,88 @@
+#!/bin/bash
+
+# HTTP log archiving
+#     assumption: log files are named LOGTYPE-SITE*
+#     examples: access-consumer, access-workforce, error-consumer
+# Modified for use with WPPI CA Nets...
+
+#===============================================================================
+# Configurable settings
+
+EXPECTED_ARGS=3
+E_BADARGS=65
+
+if [ $# -ne $EXPECTED_ARGS ]
+then
+  echo "  "
+  echo "Usage: `basename $0` {args}"
+  echo "  "
+  echo "    Pass three args: PRODUCT SITE VERSION"
+  echo "  "
+  echo "    examples:"
+  echo "            `basename $0` WPPI brload v70 "
+  echo "            `basename $0` WPPI brprod v70 "
+  echo "  "
+  echo "  "
+  exit $E_BADARGS
+fi
+
+PRODUCT=$1
+SITE=$2
+VERSION=$3
+
+LOGDIR=/logs/$VERSION/$SITE
+ARCDIR=/logs/$VERSION/$SITE/archive
+RETAINDAYS=30
+LOGTYPES=("access" "error" "dispatcher" "ssl_access" "ssl_error") 
+#LOGTYPES=("access" "error" "rewrite" "deflate")
+
+# End configurable settings
+#===============================================================================
+if [ ! -d "$ARCDIR" ]; then
+    # Control will enter here if $DIRECTORY doesn't exist.
+    mkdir $ARCDIR
+fi
+
+START=$SECONDS
+
+HOST=$( hostname )
+
+[ -t 0 ] && { VERBOSE="-v" ; TRACE="-t" ; }
+
+function display() {
+    [ -t 0 ] && echo "$*" || logger -t $PRODUCT-$SITE -p daemon.notice "$*"
+}
+
+function rotate() {
+    PREFIX=$1
+
+    for FILE in $( ls -t ${PREFIX}* 2>/dev/null | sed -n '2,$p' ) # all but the most current
+    do
+        mv $FILE $ARCDIR/$FILE
+        gzip $VERBOSE $ARCDIR/$FILE
+        display "HTTP log archive: $FILE archived/compressed"
+    done
+
+    find $ARCDIR -name "${PREFIX}*" -type f -mtime +$RETAINDAYS 2>/dev/null | xargs $TRACE rm -f
+}
+
+cd $LOGDIR
+
+for LOGTYPE in ${LOGTYPES[*]}
+do
+    for PREFIX in $(ls -t ${SITE}_${HOST}_${LOGTYPE}* | sed 's/\..*//g' | sort | uniq)
+    do
+        rotate $PREFIX
+    done
+done
+#for LOGTYPE in ${LOGTYPES[*]}
+#do
+#    for PREFIX in $(ls $LOGTYPE-* | sed 's/\..*//g' | sort | uniq)
+#    do
+#        rotate $PREFIX
+#    done
+#done
+
+let ELAPSED=$SECONDS-$START
+
+display "HTTP log archive: completed in $ELAPSED seconds"

@@ -1,0 +1,19 @@
+{
+   "name": "AEM_Web_Server",
+   "description": "AEM Web Server Role.",
+   "json_class": "Chef::Role",
+   "default_attributes": {
+     "chef_client": {
+       "interval": 300,
+       "splay": 60
+     }
+   },
+   "override_attributes": {
+   },
+   "chef_type": "role",
+   "run_list": ["recipe[chef-client::preinstall]",
+                "recipe[learn_chef_httpd::default]"
+   ],
+   "env_run_lists": {
+   }
+}

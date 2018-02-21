@@ -1,0 +1,106 @@
+#!/bin/bash
+
+# Load custom variables 
+. <%= @aem_install_path %>/6.1/crx-quickstart/bin/aem-compact.cfg
+
+# Stop AEM
+
+#SHUTDOWN_WAIT is wait time in seconds for java proccess to stop
+SHUTDOWN_WAIT=180
+ 
+aem_pid() {
+        echo `ps -fe | grep java | grep -v grep | tr -s " "|cut -d" " -f2`
+}
+
+# log timestamp
+timestamp() {
+        date +"%Y-%m-%d %H:%M:%S"
+}
+
+echo $(timestamp) "INFO: start offline backup and compaction" >> $compactionlogfile
+
+pid=$(aem_pid)
+  if [ -n "$pid" ]
+  then
+        echo $(timestamp) "INFO: stoping AEM ..." >> $compactionlogfile
+        $aemfolder/bin/stop &>> $compactionoutfile
+        echo $(timestamp) "INFO: check AEM status ..." >> $compactionlogfile
+ 
+    let kwait=$SHUTDOWN_WAIT
+    count=0;
+    until [ `ps -p $pid | grep -c $pid` = '0' ] || [ $count -gt $kwait ]
+    do
+      echo -n -e "\n\e[00;31mwaiting for processes to exit\e[00m";
+      sleep 1
+      let count=$count+1;
+    done
+ 
+    if [ $count -gt $kwait ]; then
+      echo -n -e "\n\e[00;31mkilling process didn't stop after $SHUTDOWN_WAIT seconds\e[00m"
+      echo ${timestamp} "INFO: killing process didn't stop after $SHUTDOWN_WAIT seconds." >> $compactionlogfile
+      kill -9 $pid &>> $compactionoutfile
+    fi
+  else
+    echo -e "\e[00;31mAEM is not running\e[00m"
+    echo ${timestamp} "INFO: AEM is not running." >> $compactionlogfile
+  fi
+
+## Start offline backup
+
+if [ -d ${backuptargetfolder} ]
+then
+        echo $(timestamp) "INFO: remove backup target folder ${backuptargetfolder}" >> $compactionlogfile
+        rm -rf ${backuptargetfolder} &>> $compactionoutfile
+fi
+
+echo $(timestamp) "INFO: copy ${installfolder} to ${backuptargetfolder}" >> $compactionlogfile
+echo "copy ${installfolder} to ${backuptargetfolder}"
+
+cp -pri ${installfolder} ${backuptargetfolder} &>> $compactionoutfile
+
+# keep only 7 archive files
+
+while [ `ls -l $aembackupfolder/*.tarz|wc -l` -gt 6 ] ; do
+   deletefile=`ls -1t $aembackupfolder/*.tarz|tail -1`
+   echo $(timestamp) "INFO: remove old archive file $deletefile ..." >> ${compactionlogfile}
+   rm $deletefile &>> ${compactionoutfile}
+done
+
+echo $(timestamp) "INFO: backup completed, tar and compress ..." >> ${compactionlogfile}
+pushd ${aembackupfolder} &>> ${compactionoutfile}
+echo $(timestamp) "INFO: tar up directory" `basename ${backuptargetfolder}` "in" ${aembackupfolder} >> ${compactionlogfile}
+echo "tar up directory" `basename ${backuptargetfolder}` "in" ${aembackupfolder}
+tar -czf ${backuptargetfile} `basename ${backuptargetfolder}` &>> ${compactionoutfile}
+popd &>> ${compactionoutfile}
+echo $(timestamp) "INFO: backup file created successfully: ${backuptargetfile}" >> ${compactionlogfile}
+
+## Done offline backup
+
+## Find old checkpoints
+echo $(timestamp) "INFO: Finding old checkpoints." >> $compactionlogfile
+echo "Finding old checkpoints."
+java -Dtar.memoryMapped=true -Xms4g -Xmx4g -jar $oakrun checkpoints $aemfolder/repository/segmentstore &>> $compactionoutfile
+
+## Delete unreferenced checkpoints
+echo $(timestamp) "INFO: Deleting unreferenced checkpoints." >> $compactionlogfile
+echo "Deleting unreferenced checkpoints."
+java -Dtar.memoryMapped=true -Xms4g -Xmx4g -jar $oakrun checkpoints $aemfolder/repository/segmentstore rm-unreferenced &>> $compactionoutfile
+
+## Run compaction
+echo $(timestamp) "INFO: Running compaction. This may take a while." >> $compactionlogfile
+echo "Running compaction. This may take a while."
+java -Dtar.memoryMapped=true -Xms4g -Xmx4g -jar $oakrun compact $aemfolder/repository/segmentstore &>> $compactionoutfile
+
+## Report Completed
+echo $(timestamp) "INFO: Compaction complete." >> $compactionlogfile
+
+## Start AEM back up
+now="$(date)"
+echo $(timestamp) "INFO: Starting up AEM." >> $compactionlogfile
+$aemfolder/bin/start &>> $compactionoutfile
+echo $(timestamp) "INFO: AEM Startup at: $now" >> $compactionlogfile
+echo $(timestamp) "INFO: offline backup and compaction end" >> $compactionlogfile
+
+printf "Offine backup and compaction complete. Please check the log at:\n"
+printf "$compactionlogfile\n"
+printf "$compactionlogfile\n"

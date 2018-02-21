@@ -1,0 +1,45 @@
+#!/bin/bash 
+#
+#       /etc/init.d/aem-auth
+#
+# chkconfig: 345 90 55
+# description: aem-auth init script
+
+# Source function library.
+. /etc/init.d/functions
+
+export AEMDIR=/apps/aem-auth/6.2/crx-quickstart/bin
+export PATH=/usr/java/jdk1.8.0_161/bin:$PATH
+
+start() {
+su root -c 'cd $AEMDIR; ./start'
+}
+
+stop() {
+su root -c 'cd $AEMDIR; ./stop'
+}
+
+status() {
+su root -c 'cd $AEMDIR; ./status'
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    stop
+    start
+    ;;
+  status)
+    status
+    ;;
+  *)
+    echo "Usage: aem-auth {start|stop|restart|status}"
+    exit 1
+    ;;
+esac
+exit $?

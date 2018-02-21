@@ -1,0 +1,22 @@
+# AEM server information for offline compaction
+
+installfolder="<%= @aem_install_path %>/6.1"
+aemfolder="$installfolder/crx-quickstart"
+aemlogfolder=$aemfolder/logs/maintenance
+aembackupfolder=/backups/<%= @aem_env %>/<%= @apps_home %>
+
+#ensure log folder exists
+mkdir -p $aemlogfolder
+mkdir -p $aembackupfolder
+
+# compaction tool
+oakrun="$aemfolder/jars/{{ oakjar }}"
+
+# timestamp
+now=`date +%Y%m%d-%H%M%S`
+
+# define compaction
+compactionwaittimebeforekill=60
+compactionfileprefix=compaction-$now
+compactionlogfile=$aemlogfolder/${compactionfileprefix}.log
+compactionoutfile=$aemlogfolder/${compactionfileprefix}.out

@@ -1,0 +1,274 @@
+#
+# Version Date 2011/12/15/2011
+#
+# Sudoers File customized for Kaiser Permanente
+#  Irvine / Napa
+
+## Host Aliases
+#
+# Prod Environment
+Host_Alias      PROD_DMZ        = 172.20.239.0/25,172.24.47.0/25
+Host_Alias      PROD_WEB        = 172.20.231.0/24,172.24.39.0/24
+Host_Alias      PROD_APP        = 172.20.231.0/24,172.24.39.0/24
+Host_Alias      PROD_DB         = 172.20.234.0/24,172.24.42.0/24
+Host_Alias      PROD_LDAP       = 172.20.233.0/24,172.24.41.0/24
+Host_Alias      PROD_SRCH       = 172.20.231.0/24,172.24.39.0/24
+Host_Alias      PROD_KPCONTENT  = 172.20.239.26,172.20.239.28,172.24.47.26,172.24.47.28
+Host_Alias      PROD_KPLAPP     = 172.20.231.39,172.20.231.40,172.24.39.39,172.24.39.40
+Host_Alias      PROD_OD         = 172.20.231.25,172.20.231.35,172.24.39.0/24
+Host_Alias      PROD_MON        = 172.20.230.0/24,172.24.38.0/24
+
+# Preprod/Hardening Environment
+Host_Alias      PREPROD_DMZ        = 172.20.195.0/25,172.24.3.0/25
+Host_Alias      PREPROD_WEB        = 172.20.217.0/24,172.24.25.0/24
+Host_Alias      PREPROD_APP        = 172.20.218.0/24,172.24.26.0/24,172.20.221.34,172.24.29.34
+Host_Alias      PREPROD_DB         = 172.20.221.0/24,172.24.29.0/24
+Host_Alias      PREPROD_LDAP       = 172.20.220.0/24,172.24.28.0/24
+Host_Alias      PREPROD_SRCH       = 172.20.218.0/24,172.24.26.0/24
+Host_Alias      PREPROD_KPCONTENT  = 172.20.195.27,172.20.195.31,172.24.3.27,172.24.3.31
+Host_Alias      PREPROD_KPLAPP     = 172.20.218.45,172.20.218.46,172.24.26.45,172.24.26.46
+Host_Alias      PREPROD_CIDEPLOY   = 172.20.218.28,172.24.26.28
+Host_Alias      PREPROD_CIBUILD    = 172.20.212.58,172.20.218.31,172.24.20.58,172.24.26.31
+Host_Alias      PREPROD_OD         = 172.20.218.24,172.20.218.26,172.24.26.0/24
+
+
+# non-prod (preview, dev and QA)
+Host_Alias      NONPRD_APP_SRCH_LDAP        = 172.20.212.0/24
+
+# non-prod at SoftLayer 
+Host_Alias      SL_NONPRD        = 10.8.131.0/24,10.8.132.0/24,10.8.133.0/24,10.8.134.0/24,10.8.138.0/24,10.8.139.0/24,10.8.140.0/24,10.8.141.0/24,10.8.142.0/24,10.8.143.0/24
+
+## User Information
+## NAME                 UID
+#  ------------------------------
+#  Samson S Yamarapu    k368416
+#  Fred X Shimaya       g405966
+#  Jay R Sisodiya       h861239
+#  Roman X Galperin     k425692
+#  Michael D Logue      x636498
+#  Eric K Lam           g693818
+#  Perumal Panchavarnam p519423
+#  Narayanan Ramachandran   O756222
+#  Louis Jiang          o977150
+#  John S Chuang        k221601
+#  Thang Dam            p211961
+#  Jason Yap            w864715
+#  James Vance          d111215
+#  Victor Hu            b943487
+#  Jere Krischel        k238491
+#  Shawn C Seaton       g885873
+#  Senthil Kumar        a884179 
+#  Roman  Chamine       g661148 
+#  Brian Sholes         k120790 
+#  John Chuang          k221601 
+#  Manual J Gomez	k226836
+#  Leland F Irwin	z253086
+#  Aravindan Pratapagiriq430511
+#  Arthur Yeh 		k237702
+#  Alfredo Abalos	a682892
+#  Kathleen Ho		k155027
+#  David Lew		p369641
+#
+#  IMG Users            UID
+#  ------------------------------
+#  Grace T Santos       p284159
+#  Sally M Vaghar       k228061
+#  Clayton M Bittle	d674161
+#  Clint Walker         f552999
+#  Doraiswamy K Murthy  y682251
+#  Rene Crozier         m122389
+#  Ameer Mohammed	f119714
+#  Vinod K Jonnalagadda z506736
+
+#  IBM Load Test Team
+#  ------------------------------
+#  Rose Okumoto         k137241
+#  Naveena Rudrapada    t003403
+#
+#  Qualys Scan User     ks01830
+#
+#  SPLUNK
+#-------------------------------
+#  splunk               splunk
+
+## ROM Users
+## NAME                 UID
+#  ------------------------------
+#  Control Center       srom
+#  Nik Kifle            nkifle
+#  Roy Barret           rbarret
+#  Mitch Mok            mmok
+#  Walter Goodman       wgoodman
+#  Bola Bankole         bbankole
+#  Reginald Mayberry    rmayberr
+#  Brandon Thorpe       bthorpe
+#  PD Heller		pdheller
+#  Tom Johnson		tjohnson
+#
+#  WAS Users
+#  -------------------------------
+#
+
+## User Alias
+User_Alias ROOT_USERS = k368416, g405966, h861239, k425692, g693818, p519423,\
+                        ks01830, f840953, o756222, b335562, o977150, k155027,\
+                        d111215, w864715, splunk, k221601, b943487, k238491,\
+                        g885873, a884179, g661148, k120790, k221601, k226836,\
+                        z253086, k237702, a682892, p369641, g475753, i567961
+User_Alias IMG_USERS  = p284159, k228061, d674161, f552999, z506736,\
+                        y682251, m122389, f119714
+User_Alias ROM_USERS  = nkifle, rbarret, mmok, wgoodman, bbankole, rmayberr,\
+                        bthorpe, pdheller, tjohnson
+User_Alias ROOT_DEV  = q430511
+User_Alias PCM_USERS = k137241, t003403
+User_Alias SPLUNK = splunk
+User_Alias EBIZOPS_USERS = d111215, k237702, k112433, \
+                           k238491, k118134, d150097, d110928, h236912
+## Command Aliases
+## These are groups of related commands...
+Cmnd_Alias WAS                  = /usr/local/scripts/suwasadm,/bin/su - wasadm
+Cmnd_Alias IHS                  = /usr/local/scripts/suihsadm,/bin/su - ihsadm
+Cmnd_Alias ORACLE               = /usr/local/scripts/suoracle,/bin/su - oracle
+Cmnd_Alias QUEST                = /usr/local/scripts/suquest,/bin/su - quest
+Cmnd_Alias LDAP                 = /usr/local/scripts/sudsadm,/bin/su - dsadm
+Cmnd_Alias SABA                 = /usr/local/scripts/susabaadm
+Cmnd_Alias OD                   = /usr/local/scripts/suodadm,/bin/su - odadm
+Cmnd_Alias PCM_OPER             = /usr/sbin/pmap
+Cmnd_Alias ODADM_SCRIPT         = /usr/local/scripts/flushcache
+Cmnd_Alias CIDEPLOY             = /usr/local/scripts/suwppdeploy
+# Cmnd_Alias CIBUILD              = /usr/local/scripts/suwppbuild
+Cmnd_Alias CIBUILD              = /usr/local/scripts/suwppbuild,/apps/scripts/stop-apache2.sh,/apps/scripts/start-apache2.sh
+Cmnd_Alias OD_OPER              = /usr/sbin/svcadm enable  svc-opendeploy, \
+                                  /usr/sbin/svcadm disable svc-opendeploy, \
+                                  /usr/sbin/svcadm restart svc-opendeploy, \
+                                  /etc/init.d/iwod60_wrap
+Cmnd_Alias VIVISIMO             = /usr/local/scripts/suvivisimo,/bin/su - vivisimo 
+Cmnd_Alias VIVISIMO_OPER        = /usr/sbin/svcadm enable  apache2-vivisimo, \
+                                  /usr/sbin/svcadm disable apache2-vivisimo, \
+                                  /usr/sbin/svcadm restart apache2-vivisimo, \
+                                  /usr/sbin/svcadm refresh apache2-vivisimo, \
+                                  /usr/sbin/svcadm status  apache2-vivisimo
+Cmnd_Alias EGREPWAS             = /usr/local/scripts/egrep_wasadm.sh
+Cmnd_Alias EBIZOPS_CMDS         = /export/home/ebizops/bin/f5-CA-state.sh *, \
+                                  /export/home/ebizops/bin/f5-api-CA-state.sh *
+#
+# Added to support DB2/LDAP for WPP Interim Servers
+Cmnd_Alias IHS_COMMANDS         = /usr/local/ihscripts/
+Cmnd_Alias MOBILE_FLUSHCACHE    = /usr/local/scripts/mobile_flushcache_hqa, \
+                                  /usr/local/scripts/mobile_flushcache_hqab, \
+                                  /usr/local/scripts/mobile_flushcache_hqac, \
+                                  /usr/local/scripts/mobile_flushcache_hpp, \
+                                  /usr/local/scripts/mobile_flushcache_hppb, \
+                                  /usr/local/scripts/mobile_flushcache
+Cmnd_Alias AEMAUTH		= /bin/su - authadm, /bin/su - pubadm, /bin/su - dispadm
+## Next comes the main part: which users can run what software on
+## which machines (the sudoers file can be shared between multiple
+## systems).
+## Syntax:
+##
+##      user    MACHINE=COMMANDS
+##
+## The COMMANDS section may have other options added to it.
+##
+## Allow root to run any commands anywhere
+root            ALL=(ALL)       ALL
+ROOT_USERS      ALL=(ALL)       ALL
+ROM_USERS       ALL=(ALL)       ALL
+IMG_USERS       ALL=(ALL)       ALL
+##
+## Root for Delevopers
+##
+ROOT_DEV	NONPRD_APP_SRCH_LDAP=(ALL) ALL
+
+## Allow Load Test (PCM) users to run pmap as wasadm
+PCM_USERS       ALL=(wasadm)    PCM_OPER
+
+# Allow individual users access to certain commands
+odadm   PROD_APP, PREPROD_APP, NONPRD_APP_SRCH_LDAP    = NOPASSWD: ODADM_SCRIPT, MOBILE_FLUSHCACHE
+ihsadm  PROD_DMZ, PREPROD_DMZ, PROD_APP, PREPROD_APP, PROD_WEB, PREPROD_WEB, NONPRD_APP_SRCH_LDAP    = NOPASSWD: IHS_COMMANDS
+
+## Allows members of the 'inf' group to run these commands
+## group host_alias = command_alias
+%kporgadm ALL=(ALL) ALL
+%infsl  SL_NONPRD                      = IHS, OD, QUEST, WAS, LDAP, VIVISIMO, ORACLE
+%inf  PROD_DMZ, PREPROD_DMZ          = IHS, OD, QUEST, SABA, DB2LDAP
+%inf  PROD_WEB, PREPROD_WEB          = IHS, OD, QUEST, DB2LDAP
+%inf  PROD_APP, PREPROD_APP          = WAS, OD, QUEST, LDAP
+%inf  PROD_LDAP, PREPROD_LDAP        = LDAP, QUEST
+%inf  PROD_SRCH, PREPROD_SRCH        = VIVISIMO, OD, QUEST
+%inf  PROD_DB, PREPROD_DB            = DB2LDAP
+%dba  PROD_DB, PREPROD_DB            = ORACLE, QUEST
+%saba PREPROD_KPCONTENT, PROD_KPCONTENT, NONPRD_APP_SRCH_LDAP = SABA
+%inf  PREPROD_CIDEPLOY               = CIDEPLOY
+%dev  PREPROD_CIBUILD                = CIBUILD
+%inf  NONPRD_APP_SRCH_LDAP           = IHS, OD, QUEST, WAS, VIVISIMO, LDAP, DB2LDAP
+%inf  PROD_MON                       = QUEST
+%aemdev SL_NONPRD		             = AEMAUTH
+%apidev SL_NONPRD			         = ALL
+
+## Allow EBMOC, IMG, Ebiz folks ability to set CA F5/DB state D 
+EBIZOPS_USERS     PREPROD_DB, PROD_DB=(ebizops)  EBIZOPS_CMDS   
+
+## Allow odadm user to stop/start/restart OpenDeploy process
+odadm     PROD_OD              = NOPASSWD: OD_OPER
+odadm     PREPROD_OD           = NOPASSWD: OD_OPER
+odadm     NONPRD_APP_SRCH_LDAP = NOPASSWD: OD_OPER
+odadm     ALL = (ihsadm) NOPASSWD: /export/home/ihsadm/bin/replace_kp_rewrite_rules_conf_as_ihsadm.pl
+odadm     ALL = (ihsadm) NOPASSWD: /export/home/ihsadm/bin/replace_kp_shortcut_map_as_ihsadm.pl
+
+## Allow vivisimo user to start/stop/restart apache instance
+vivisimo  PROD_SRCH        = NOPASSWD: VIVISIMO_OPER
+vivisimo  PREPROD_SRCH     = NOPASSWD: VIVISIMO_OPER
+
+## Allow "quest" user to run these scripts as wasadm
+quest     PROD_KPLAPP,PREPROD_KPLAPP = NOPASSWD: NOTIFICATION_OPER
+quest     PREPROD_APP,PROD_APP       = (wasadm) NOPASSWD: KANA_OPER
+
+## Kate Ho
+replstatus ALL=(dsadm) NOPASSWD:/apps/sun/ds/scripts/ldap_replication_status.sh
+
+## Allow DB2 DBAs to manage DB2 Servers
+%db2dba         PROD_DB, PREPROD_DB        = DB2_COMMANDS
+## Allow idsldap user to start/stop Admin Server
+idsldap         PROD_DB, PREPROD_DB        = LDAP_COMMANDS
+##Updated sudo for CMDB credentials.
+# Cmnd_Alias TADDMCMD = /usr/sbin/lsof
+Cmnd_Alias TADDMCMD = /usr/local/bin/lsof
+%taddmgrp ALL=(ALL) NOPASSWD:TADDMCMD
+## Added for testers
+Host_Alias  TEST_HOSTS  = 172.20.218.36,172.20.218.41,172.20.218.77, \
+                          172.20.218.37,172.20.218.42,172.20.221.34
+Cmnd_Alias  TEST_CMDS   = /export/home/k203479/solperf.sh, /usr/bin/kill -3 [0-9]*,\
+                          /usr/bin/pfiles, /usr/bin/pstack
+User_Alias  TESTERS     = t003403
+TESTERS     TEST_HOSTS  = NOPASSWD: TEST_CMDS
+
+## Allow TESTERS to run script as wasadm
+TESTERS  PREPROD_APP = WAS, (wasadm) NOPASSWD: EGREPWAS
+
+# Add abilility to execute jmap as wusadm on xlzsbap0012x and xlzsbap0052x
+Cmnd_Alias  TEST_CMDS_WAS  =\
+    /apps/v70/services/WebSphere/AppServer/java/bin/jmap -dump\:live\,format=b\,file=/logs/heapdumps/[a-zA-Z0-9]*,\
+    /usr/bin/gzip /logs/heapdumps/[a-zA-Z0-9]*,\
+    /usr/bin/rm /logs/heapdumps/[a-zA-Z0-9]*,\
+    /usr/bin/chmod 755 /logs/heapdumps/[a-zA-Z0-9]*
+TESTERS     TEST_HOSTS  = (wasadm) NOPASSWD: TEST_CMDS_WAS
+#
+# Allow user ggstatus to execute scrip ggwphppstatus as user ggwphpp or user ggwppprd
+ggstatus ALL=(ggwphpp) NOPASSWD:/home/ggstatus/ggwphppstatus
+ggstatus ALL=(ggwppprd) NOPASSWD:/home/ggstatus/ggwphppstatus
+ggstatus ALL=(ggpdcmnet) NOPASSWD:/home/ggstatus/ggpdcmnetstatus
+ggstatus ALL=(ggpdmdnet) NOPASSWD:/home/ggstatus/ggpdmdnetstatus
+ggstatus ALL=(ggpdstnet) NOPASSWD:/home/ggstatus/ggpdstnetstatus
+ggstatus ALL=(ggpvmdnet) NOPASSWD:/home/ggstatus/ggpvmdnetstatus
+ggstatus ALL=(ggpvstnet) NOPASSWD:/home/ggstatus/ggpvstnetstatus
+ggstatus ALL=(ggpvcmnet) NOPASSWD:/home/ggstatus/ggpvcmnetstatus
+#
+#  Vulnerability scanning account (ks01830 is pbqualys group memeber)
+#
+%pbqualys	ALL = NOPASSWD: ALL
+#
+# Allow sunps to operate as root
+#
+
+sauron       ALL=(ALL)       NOPASSWD: ALL
